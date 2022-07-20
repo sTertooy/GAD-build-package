@@ -1,10 +1,10 @@
 name: 'Build GAP package'
 description: 'Build the given GAP package being tested'
 inputs:
-  NO_COVERAGE:
-    description: 'set to false to gather coverage'
+  COVERAGE:
+    description: 'set to true to gather coverage'
     required: false
-    default: true
+    default: false
   CONFIGFLAGS:
     description: 'additional arguments to be passed to configure'
     required: false
@@ -20,7 +20,7 @@ runs:
        GAPROOT=/opt/gap
        
        # ensure coverage is turned on
-       if [[ -z $NO_COVERAGE ]]; then
+       if [ ${{ inputs.COVERAGE }} ]; then
            export CFLAGS="$CFLAGS --coverage"
            export CXXFLAGS="$CXXFLAGS --coverage"
            export LDFLAGS="$LDFLAGS --coverage"
