@@ -1,0 +1,44 @@
+name: 'Build GAP package'
+description: 'Build the given GAP package being tested'
+inputs:
+  NO_COVERAGE:
+    description: 'set to false to gather coverage'
+    required: false
+    default: true
+  CONFIGFLAGS:
+    description: 'additional arguments to be passed to configure'
+    required: false
+    default: ''
+    
+runs:
+  using: "composite"
+  steps:
+    - name: "Prepare the package"
+      run: |
+       set -ex
+       
+       GAPROOT=/opt/gap
+       
+       # ensure coverage is turned on
+       if [[ -z $NO_COVERAGE ]]; then
+           export CFLAGS="$CFLAGS --coverage"
+           export CXXFLAGS="$CXXFLAGS --coverage"
+           export LDFLAGS="$LDFLAGS --coverage"
+       fi
+       
+       # build this package, if necessary
+       if [[ -x prerequisites.sh ]]; then
+           ./prerequisites.sh $GAPROOT
+       fi
+       if [[ -x autogen.sh ]]; then
+           ./autogen.sh
+       fi
+       if grep Autoconf ./configure > /dev/null
+       then
+           ./configure --with-gaproot=$GAPROOT ${{ inputs.CONFIGFLAGS }}
+           make -j4 V=1
+       elif [[ -x configure ]]; then
+           ./configure ${{ inputs.CONFIGFLAGS }} $GAPROOT
+           make -j4 CFLAGS="$CFLAGS" CXXFLAGS="$CXXFLAGS" LDFLAGS="$LDFLAGS"
+       fi
+      shell: bash
