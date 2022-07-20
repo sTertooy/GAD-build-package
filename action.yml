@@ -20,7 +20,7 @@ runs:
        GAPROOT=/opt/gap
        
        # ensure coverage is turned on
-       if [ ${{ inputs.COVERAGE }} ]; then
+       if [ "${{ inputs.COVERAGE }}" == "true" ]; then
            export CFLAGS="$CFLAGS --coverage"
            export CXXFLAGS="$CXXFLAGS --coverage"
            export LDFLAGS="$LDFLAGS --coverage"
