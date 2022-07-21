@@ -1,5 +1,5 @@
 name: "Build GAP package"
-description: "Build the GAP package being tested"
+description: "Builds the GAP package being tested"
 inputs:
   COVERAGE:
     description: "Set to true to gather coverage"
@@ -42,3 +42,6 @@ runs:
            ./configure ${{ inputs.CONFIGFLAGS }} $GAPROOT
            make -j4 CFLAGS="$CFLAGS" CXXFLAGS="$CXXFLAGS" LDFLAGS="$LDFLAGS"
        fi
+       
+       mkdir -p /tmp/gaproot/pkg/
+       ln -f -s $PWD /tmp/gaproot/pkg/
