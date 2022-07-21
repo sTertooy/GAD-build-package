@@ -1,19 +1,20 @@
-name: 'Build GAP package'
-description: 'Build the given GAP package being tested'
+name: "Build GAP package"
+description: "Build the GAP package being tested"
 inputs:
   COVERAGE:
-    description: 'set to true to gather coverage'
+    description: "Set to true to gather coverage"
     required: false
     default: false
   CONFIGFLAGS:
-    description: 'additional arguments to be passed to configure'
+    description: "Additional arguments to be passed to configure"
     required: false
-    default: ''
+    default: ""
     
 runs:
   using: "composite"
   steps:
     - name: "Prepare the package"
+      shell: bash
       run: |
        set -ex
        
@@ -41,4 +42,3 @@ runs:
            ./configure ${{ inputs.CONFIGFLAGS }} $GAPROOT
            make -j4 CFLAGS="$CFLAGS" CXXFLAGS="$CXXFLAGS" LDFLAGS="$LDFLAGS"
        fi
-      shell: bash
