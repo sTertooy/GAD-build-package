@@ -42,6 +42,3 @@ runs:
            ./configure ${{ inputs.CONFIGFLAGS }} $GAPROOT
            make -j4 CFLAGS="$CFLAGS" CXXFLAGS="$CXXFLAGS" LDFLAGS="$LDFLAGS"
        fi
-       
-       mkdir -p /tmp/gaproot/pkg/
-       ln -f -s $PWD /tmp/gaproot/pkg/
