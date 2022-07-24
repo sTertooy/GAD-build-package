@@ -13,7 +13,7 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: "Prepare the package"
+    - name: "Build the package"
       shell: bash
       run: |
        set -ex
