@@ -20,14 +20,14 @@ runs:
        
        GAPROOT=/opt/gap
        
-       # ensure coverage is turned on
+       # Ensure coverage is turned on
        if [ "${{ inputs.COVERAGE }}" == "true" ]; then
            export CFLAGS="$CFLAGS --coverage"
            export CXXFLAGS="$CXXFLAGS --coverage"
            export LDFLAGS="$LDFLAGS --coverage"
        fi
        
-       # build this package, if necessary
+       # Build this package, if necessary
        if [[ -x prerequisites.sh ]]; then
            ./prerequisites.sh $GAPROOT
        fi
