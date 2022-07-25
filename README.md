@@ -5,7 +5,18 @@ This GitHub action builds the GAP package located in the current directory. Base
 
 ## Usage
 
-This action can be optionally called in the workflow of a GAP package to compile said package.
+This action can optionally be called in the workflow of a GAP package to compile said package.
+
+### Inputs
+
+  - `COVERAGE`:
+    * Set to true to gather coverage
+    * default: `false`
+    * required: `false`
+  - `CONFIGFLAGS`:
+    * Additional arguments to be passed to configure
+    * default: `""`
+    * required: `false`
 
 ### Example
 
