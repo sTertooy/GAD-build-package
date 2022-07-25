@@ -1,0 +1,26 @@
+name: CI
+
+on:
+  - push
+  - pull_request
+  - workflow_dispatch
+
+jobs:
+  test:
+    name: "Test building package"
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+            
+    container:
+      image: ghcr.io/stertooy/gda-image:master-slim
+      
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          repository: gap-packages/example
+      - uses: actions/checkout@v3
+        with:
+          path: this-action/
+      - uses: ./this-action/
+      
