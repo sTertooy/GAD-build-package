@@ -9,36 +9,40 @@ inputs:
     description: "Additional arguments to be passed to configure"
     required: false
     default: ""
-    
+
+defaults:
+  run:
+    shell: bash
+
 runs:
   using: "composite"
   steps:
+  
     - name: "Build the package"
-      shell: bash
       run: |
-       set -ex
-       
-       GAPROOT=/opt/gap
-       
-       # Ensure coverage is turned on
-       if [ "${{ inputs.COVERAGE }}" == "true" ]; then
-           export CFLAGS="$CFLAGS --coverage"
-           export CXXFLAGS="$CXXFLAGS --coverage"
-           export LDFLAGS="$LDFLAGS --coverage"
-       fi
-       
-       # Build this package, if necessary
-       if [[ -x prerequisites.sh ]]; then
-           ./prerequisites.sh $GAPROOT
-       fi
-       if [[ -x autogen.sh ]]; then
-           ./autogen.sh
-       fi
-       if grep Autoconf ./configure > /dev/null
-       then
-           ./configure --with-gaproot=$GAPROOT ${{ inputs.CONFIGFLAGS }}
-           make -j4 V=1
-       elif [[ -x configure ]]; then
-           ./configure ${{ inputs.CONFIGFLAGS }} $GAPROOT
-           make -j4 CFLAGS="$CFLAGS" CXXFLAGS="$CXXFLAGS" LDFLAGS="$LDFLAGS"
-       fi
+        set -ex
+        
+        GAPROOT=/opt/gap
+        
+        # Ensure coverage is turned on
+        if [ "${{ inputs.COVERAGE }}" == "true" ]; then
+            export CFLAGS="$CFLAGS --coverage"
+            export CXXFLAGS="$CXXFLAGS --coverage"
+            export LDFLAGS="$LDFLAGS --coverage"
+        fi
+        
+        # Build this package, if necessary
+        if [[ -x prerequisites.sh ]]; then
+            ./prerequisites.sh $GAPROOT
+        fi
+        if [[ -x autogen.sh ]]; then
+            ./autogen.sh
+        fi
+        if grep Autoconf ./configure > /dev/null
+        then
+            ./configure --with-gaproot=$GAPROOT ${{ inputs.CONFIGFLAGS }}
+            make -j4 V=1
+        elif [[ -x configure ]]; then
+            ./configure ${{ inputs.CONFIGFLAGS }} $GAPROOT
+            make -j4 CFLAGS="$CFLAGS" CXXFLAGS="$CXXFLAGS" LDFLAGS="$LDFLAGS"
+        fi
